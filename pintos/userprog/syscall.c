@@ -40,7 +40,6 @@ unsigned tell(int fd);
 void close(int fd);
 bool copy_in(void* dst, const void* usrc, size_t size);
 bool copy_in_string(char* dst, const char* us, size_t dst_sz, size_t* out_len);
-static struct lock filesys_lock;
 int exec(const char* cmd_line);
 pid_t fork(const char* thread_name, struct intr_frame* if_);
 int wait(pid_t pid);
@@ -55,7 +54,6 @@ void syscall_init(void) {
   write_msr(MSR_LSTAR, (uint64_t)syscall_entry);
   write_msr(MSR_SYSCALL_MASK,
             FLAG_IF | FLAG_TF | FLAG_DF | FLAG_IOPL | FLAG_AC | FLAG_NT);
-  lock_init(&filesys_lock);
 }
 
 /* The main system call interface */
